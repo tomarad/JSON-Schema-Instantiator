@@ -1,10 +1,12 @@
+'use strict';
+
 // The JSON Object that defines the default values of certain types.
 var typesInstantiator = {
   'string': '',
   'number': 0,
   'integer': 0,
   'null': null,
-  'boolean': false, // Always stay positive?,
+  'boolean': false, // Always stay positive?
   'object': { }
 };
 
@@ -88,6 +90,9 @@ function instantiate(schema) {
   return data['kek'];
 }
 
-module.exports = {
-  instantiate: instantiate
-};
+// If we're using Node.js, export the module.
+if (typeof module !== 'undefined') {
+  module.exports = {
+    instantiate: instantiate
+  };
+}
