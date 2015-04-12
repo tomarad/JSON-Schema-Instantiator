@@ -14,8 +14,7 @@ var schema = {
             "default": "Example"
         }
     }
-},
-    instance = instantiator.instantiate(schema);
+},  instance = instantiator.instantiate(schema);
     
     // instance === { title: "Example" }
 ```
