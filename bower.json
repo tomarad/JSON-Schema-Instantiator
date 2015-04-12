@@ -1,0 +1,28 @@
+{
+  "name": "angular-schema-instantiator",
+  "main": "src/angular-instantiator.js",
+  "version": "0.2.1",
+  "homepage": "https://github.com/tomarad/JSON-Schema-Instantiator",
+  "authors": [
+    "Tom Arad <tom@arad.rocks>"
+  ],
+  "description": "A simple instantiator for json schemas using AngularJS.",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "JSON",
+    "Schema",
+    "JSON-Schema",
+    "Instance",
+    "Instantiator"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
