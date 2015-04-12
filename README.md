@@ -1,7 +1,21 @@
 # JSON-Schema-Instantiator
 A simple tool for instantiating JSON Schemas, with Angular support!
 
-## How to use
+## Installing
+
+### Node.js
+
+```
+npm install json-schema-instantiator
+```
+
+### AngularJS
+
+```
+bower install angular-schema-instantiator
+```
+
+## Using
 
 ### Node.js
 ``` javascript
