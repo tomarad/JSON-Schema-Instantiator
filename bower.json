@@ -1,6 +1,6 @@
 {
   "name": "angular-schema-instantiator",
-  "main": ["src/instantiator", "src/angular-instantiator.js"],
+  "main": ["src/instantiator.js", "src/angular-instantiator.js"],
   "version": "0.2.1",
   "homepage": "https://github.com/tomarad/JSON-Schema-Instantiator",
   "authors": [
