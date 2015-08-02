@@ -71,7 +71,7 @@ function instantiate(schema) {
     } else if (type === 'array') {
       data[name] = [];
       var len = 1;
-      if (obj.minItems) {
+      if (obj.minItems || obj.minItems === 0) {
         len = obj.minItems;
       }
 
