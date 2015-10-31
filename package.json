@@ -1,6 +1,6 @@
 {
   "name": "json-schema-instantiator",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "A simple instantiator for json schemas.",
   "main": "index.js",
   "scripts": {
