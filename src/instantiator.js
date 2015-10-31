@@ -56,17 +56,21 @@ function instantiate(schema) {
     if (!obj) {
       return;
     }
-
+    var i;
     var type = obj.type;
     // We want non-primitives objects (primitive === object w/o properties).
     if (type === 'object' && obj.properties) {
-      data[name] = { };
+      data[name] = data[name] || { };
 
       // Visit each property.
       for (var property in obj.properties) {
         if (obj.properties.hasOwnProperty(property)) {
           visit(obj.properties[property], property, data[name]);
         }
+      }
+    } else if (obj.allOf) {
+      for (i = 0; i < obj.allOf.length; i++) {
+        visit(obj.allOf[i], name, data);
       }
     } else if (type === 'array') {
       data[name] = [];
@@ -76,7 +80,7 @@ function instantiate(schema) {
       }
 
       // Instantiate 'len' items.
-      for (var i = 0; i < len; i++) {
+      for (i = 0; i < len; i++) {
         visit(obj.items, i, data[name]);
       }
 

@@ -1,10 +1,10 @@
 {
   "name": "json-schema-instantiator",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "A simple instantiator for json schemas.",
   "main": "index.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "mocha tests/tests.js"
   },
   "keywords": [
     "JSON",
@@ -15,8 +15,12 @@
   ],
   "author": "Tom Arad",
   "license": "MIT",
-  "repository" :
-    { "type" : "git",
-      "url" : "https://github.com/tomarad/JSON-Schema-Instantiator"
-    }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tomarad/JSON-Schema-Instantiator"
+  },
+  "devDependencies": {
+    "chai": "^3.4.0",
+    "mocha": "^2.3.3"
+  }
 }
