@@ -151,3 +151,90 @@ describe('AllOf', function() {
     expect(result).to.deep.equal(expected);
   });
 });
+    
+describe('Options', function() {
+  it('should instantiate object without properties', function() {
+    schema = {
+      'type': 'object'
+    };
+    result = instantiate(schema, {requiredPropertiesOnly: true});
+    expected = {};
+    expect(result).to.deep.equal(expected);
+  });
+
+  it('should instantiate object without property', function() {
+    schema = {
+      'type': 'object',
+      'properties': {
+        'title': {
+          'type': 'string',
+        }
+      }
+    };
+    result = instantiate(schema, {requiredPropertiesOnly: true});
+    expected = {};
+    expect(result).to.deep.equal(expected);
+  });
+    
+  it('should instantiate object with only property', function() {
+    schema = {
+      'type': 'object',
+      'properties': {
+        'title': {
+          'type': 'string',
+        },
+        'description': {
+          'type': 'string'
+        }
+      },
+      'required': ['title']
+    };
+    result = instantiate(schema, {requiredPropertiesOnly: true});
+    expected = {
+      'title': ''
+    };
+    expect(result).to.deep.equal(expected);
+  });
+    
+  it('should instantiate object with all properties', function() {
+    schema = {
+      'type': 'object',
+      'properties': {
+        'title': {
+          'type': 'string',
+        },
+        'description': {
+          'type': 'string'
+        }
+      },
+      'required': ['title']
+    };
+    result = instantiate(schema, {requiredPropertiesOnly: false});
+    expected = {
+      'title': '',
+      'description': ''
+    };
+    expect(result).to.deep.equal(expected);
+  });
+
+  it('should instantiate object with all properties when empty options', function() {
+    schema = {
+      'type': 'object',
+      'properties': {
+        'title': {
+          'type': 'string',
+        },
+        'description': {
+          'type': 'string'
+        }
+      },
+      'required': ['title']
+    };
+    result = instantiate(schema, {});
+    expected = {
+      'title': '',
+      'description': ''
+    };
+    expect(result).to.deep.equal(expected);
+  });
+});

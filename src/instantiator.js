@@ -22,6 +22,23 @@ function isPrimitive(obj) {
 }
 
 /**
+ * Checks whether a property is on required array.
+ * @param property - the property to check.
+ * @param requiredArray - the required array
+ * @returns {boolean}
+ */
+function isPropertyRequired(property, requiredArray) {
+  var found = false;
+  var i = 0;
+  requiredArray = requiredArray || [];
+  while (i < requiredArray.length && !found) {
+      found = requiredArray[i] === property;
+      i++;
+  }
+  return found;
+}
+
+/**
  * Instantiate a primitive.
  * @param val - The object that represents the primitive.
  * @returns {*}
@@ -43,7 +60,8 @@ function instantiatePrimitive(val) {
  * @param schema - The schema to instantiate.
  * @returns {*}
  */
-function instantiate(schema) {
+function instantiate(schema, options) {
+  options = options || {};
 
   /**
    * Visits each sub-object using recursion.
@@ -65,7 +83,9 @@ function instantiate(schema) {
       // Visit each property.
       for (var property in obj.properties) {
         if (obj.properties.hasOwnProperty(property)) {
-          visit(obj.properties[property], property, data[name]);
+          if ((!options.requiredPropertiesOnly) || (options.requiredPropertiesOnly && isPropertyRequired(property, obj.required))) {
+            visit(obj.properties[property], property, data[name]);   
+          }
         }
       }
     } else if (obj.allOf) {
