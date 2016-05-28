@@ -43,7 +43,7 @@ instance = instantiator.instantiate(schema);
 instance = instantiator.instantiate(schema, {requiredOptionsOnly: true});
 // instance === { title: "Example", description: "" }
 
-instance = instantiator.instantiate(schema, {requiredOptionsOnly: true});
+instance = instantiator.instantiate(schema, {requiredOptionsOnly: false});
 // instance === { title: "Example" }
 
 ```

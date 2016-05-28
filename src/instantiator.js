@@ -29,13 +29,18 @@ function isPrimitive(obj) {
  */
 function isPropertyRequired(property, requiredArray) {
   var found = false;
-  var i = 0;
   requiredArray = requiredArray || [];
-  while (i < requiredArray.length && !found) {
-      found = requiredArray[i] === property;
-      i++;
-  }
+  requiredArray.forEach(function(requiredProperty) {
+      if (requiredProperty === property) {
+        found = true;
+      }
+  });
   return found;
+}
+
+
+function shouldVisit(property, obj, options) {
+    return (!options.requiredPropertiesOnly) || (options.requiredPropertiesOnly && isPropertyRequired(property, obj.required));
 }
 
 /**
@@ -83,7 +88,7 @@ function instantiate(schema, options) {
       // Visit each property.
       for (var property in obj.properties) {
         if (obj.properties.hasOwnProperty(property)) {
-          if ((!options.requiredPropertiesOnly) || (options.requiredPropertiesOnly && isPropertyRequired(property, obj.required))) {
+          if (shouldVisit(property, obj, options)) {
             visit(obj.properties[property], property, data[name]);   
           }
         }
