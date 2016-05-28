@@ -29,11 +29,23 @@ var schema = {
         "title": {
             "type": "string",
             "default": "Example"
+        },
+        "description": {
+            "type": "string"
         }
-    }
-},  instance = instantiator.instantiate(schema);
-    
-    // instance === { title: "Example" }
+    },
+    "required": ["title"]
+};
+
+instance = instantiator.instantiate(schema);
+// instance === { title: "Example", description: "" }
+
+instance = instantiator.instantiate(schema, {requiredOptionsOnly: true});
+// instance === { title: "Example", description: "" }
+
+instance = instantiator.instantiate(schema, {requiredOptionsOnly: false});
+// instance === { title: "Example" }
+
 ```
 
 ### AngularJS
