@@ -65,7 +65,7 @@ function instantiatePrimitive(val) {
  * @returns {boolean}
  */
 function isEnum(obj) {
-  return Object.prototype.toString.call(obj.enum) === '[object Array]'
+  return Object.prototype.toString.call(obj.enum) === '[object Array]';
 }
 
 /**
@@ -77,10 +77,10 @@ function instantiateEnum(val) {
   // Support for default values in the JSON Schema.
   if (val.default) {
       return val.default;
-  };
+  }
   if (!val.enum.length) {
       return undefined;
-  };
+  }
   return val.enum[0];
 }
 
