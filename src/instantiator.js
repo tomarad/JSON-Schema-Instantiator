@@ -60,6 +60,31 @@ function instantiatePrimitive(val) {
 }
 
 /**
+ * Checks whether a variable is an enum.
+ * @param obj - an object.
+ * @returns {boolean}
+ */
+function isEnum(obj) {
+  return Object.prototype.toString.call(obj.enum) === '[object Array]';
+}
+
+/**
+ * Instantiate an enum.
+ * @param val - The object that represents the primitive.
+ * @returns {*}
+ */
+function instantiateEnum(val) {
+  // Support for default values in the JSON Schema.
+  if (val.default) {
+      return val.default;
+  }
+  if (!val.enum.length) {
+      return undefined;
+  }
+  return val.enum[0];
+}
+
+/**
  * The main function.
  * Calls sub-objects recursively, depth first, using the sub-function 'visit'.
  * @param schema - The schema to instantiate.
@@ -89,7 +114,7 @@ function instantiate(schema, options) {
       for (var property in obj.properties) {
         if (obj.properties.hasOwnProperty(property)) {
           if (shouldVisit(property, obj, options)) {
-            visit(obj.properties[property], property, data[name]);   
+            visit(obj.properties[property], property, data[name]);
           }
         }
       }
@@ -108,7 +133,8 @@ function instantiate(schema, options) {
       for (i = 0; i < len; i++) {
         visit(obj.items, i, data[name]);
       }
-
+    } else if (isEnum(obj)) {
+      data[name] = instantiateEnum(obj);
     } else if (isPrimitive(obj)) {
       data[name] = instantiatePrimitive(obj);
     }
