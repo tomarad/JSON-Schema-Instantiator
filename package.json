@@ -1,6 +1,6 @@
 {
   "name": "json-schema-instantiator",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A simple instantiator for json schemas.",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,10 @@
     "schema",
     "instantiate",
     "instantiator",
-    "JSON-Schema"
+    "JSON-Schema",
+    "Generator",
+    "Generate",
+    "Data Generation"
   ],
   "author": "Tom Arad",
   "license": "MIT",

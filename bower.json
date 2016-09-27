@@ -1,7 +1,7 @@
 {
   "name": "angular-schema-instantiator",
   "main": ["src/instantiator.js", "src/angular-instantiator.js"],
-  "version": "0.4.1",
+  "version": "0.4.2",
   "homepage": "https://github.com/tomarad/JSON-Schema-Instantiator",
   "authors": [
     "Tom Arad <tom@arad.rocks>"
@@ -15,7 +15,10 @@
     "Schema",
     "JSON-Schema",
     "Instance",
-    "Instantiator"
+    "Instantiator",
+    "Generator",
+    "Generate",
+    "Data Generation"
   ],
   "license": "MIT",
   "ignore": [
