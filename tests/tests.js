@@ -54,7 +54,7 @@ describe('Primitives', function() {
 
   it('should support array of types', function() {
     schema = {
-      'type': ['string', null]
+      'type': ['string', 'null']
     };
     result = instantiate(schema);
     expected = '';
