@@ -51,6 +51,15 @@ describe('Primitives', function() {
     expected = 100;
     expect(result).to.deep.equal(expected);
   });
+
+  it('should support array of types', function() {
+    schema = {
+      'type': ['string', null]
+    };
+    result = instantiate(schema);
+    expected = '';
+    expect(result).to.deep.equal(expected);
+  });
 });
 
 

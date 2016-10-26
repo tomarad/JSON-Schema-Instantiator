@@ -105,6 +105,13 @@ function instantiate(schema, options) {
       return;
     }
     var i;
+    // Check if type is array of types
+    // if so, set type to first in list of types
+    if (Array.isArray(obj.type)) {
+      // if obj.type is not overridden, it will fail the isPrimitive check
+      // which internally also checks obj.type
+      obj.type = obj.type[0];
+    }
     var type = obj.type;
     // We want non-primitives objects (primitive === object w/o properties).
     if (type === 'object' && obj.properties) {
