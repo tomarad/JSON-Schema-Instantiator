@@ -15,8 +15,12 @@
   ],
   "author": "Tom Arad",
   "license": "MIT",
-  "repository" :
-    { "type" : "git",
-      "url" : "https://github.com/tomarad/JSON-Schema-Instantiator"
-    }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tomarad/JSON-Schema-Instantiator"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1"
+  }
 }
