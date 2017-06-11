@@ -22,6 +22,28 @@ function isPrimitive(obj) {
 }
 
 /**
+ * Checks whether a property is on required array.
+ * @param property - the property to check.
+ * @param requiredArray - the required array
+ * @returns {boolean}
+ */
+function isPropertyRequired(property, requiredArray) {
+  var found = false;
+  requiredArray = requiredArray || [];
+  requiredArray.forEach(function(requiredProperty) {
+      if (requiredProperty === property) {
+        found = true;
+      }
+  });
+  return found;
+}
+
+
+function shouldVisit(property, obj, options) {
+    return (!options.requiredPropertiesOnly) || (options.requiredPropertiesOnly && isPropertyRequired(property, obj.required));
+}
+
+/**
  * Instantiate a primitive.
  * @param val - The object that represents the primitive.
  * @returns {*}
@@ -38,12 +60,38 @@ function instantiatePrimitive(val) {
 }
 
 /**
+ * Checks whether a variable is an enum.
+ * @param obj - an object.
+ * @returns {boolean}
+ */
+function isEnum(obj) {
+  return Object.prototype.toString.call(obj.enum) === '[object Array]';
+}
+
+/**
+ * Instantiate an enum.
+ * @param val - The object that represents the primitive.
+ * @returns {*}
+ */
+function instantiateEnum(val) {
+  // Support for default values in the JSON Schema.
+  if (val.default) {
+      return val.default;
+  }
+  if (!val.enum.length) {
+      return undefined;
+  }
+  return val.enum[0];
+}
+
+/**
  * The main function.
  * Calls sub-objects recursively, depth first, using the sub-function 'visit'.
  * @param schema - The schema to instantiate.
  * @returns {*}
  */
-function instantiate(schema) {
+function instantiate(schema, options) {
+  options = options || {};
 
   /**
    * Visits each sub-object using recursion.
@@ -56,17 +104,23 @@ function instantiate(schema) {
     if (!obj) {
       return;
     }
-
+    var i;
     var type = obj.type;
     // We want non-primitives objects (primitive === object w/o properties).
     if (type === 'object' && obj.properties) {
-      data[name] = { };
+      data[name] = data[name] || { };
 
       // Visit each property.
       for (var property in obj.properties) {
         if (obj.properties.hasOwnProperty(property)) {
-          visit(obj.properties[property], property, data[name]);
+          if (shouldVisit(property, obj, options)) {
+            visit(obj.properties[property], property, data[name]);
+          }
         }
+      }
+    } else if (obj.allOf) {
+      for (i = 0; i < obj.allOf.length; i++) {
+        visit(obj.allOf[i], name, data);
       }
     } else if (type === 'array') {
       data[name] = [];
@@ -76,10 +130,11 @@ function instantiate(schema) {
       }
 
       // Instantiate 'len' items.
-      for (var i = 0; i < len; i++) {
+      for (i = 0; i < len; i++) {
         visit(obj.items, i, data[name]);
       }
-
+    } else if (isEnum(obj)) {
+      data[name] = instantiateEnum(obj);
     } else if (isPrimitive(obj)) {
       data[name] = instantiatePrimitive(obj);
     }

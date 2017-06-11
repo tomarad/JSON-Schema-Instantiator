@@ -1,17 +1,20 @@
 {
   "name": "json-schema-instantiator",
-  "version": "0.2.2",
+  "version": "0.4.2",
   "description": "A simple instantiator for json schemas.",
   "main": "index.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "mocha tests/tests.js"
   },
   "keywords": [
     "JSON",
     "schema",
     "instantiate",
     "instantiator",
-    "JSON-Schema"
+    "JSON-Schema",
+    "Generator",
+    "Generate",
+    "Data Generation"
   ],
   "author": "Tom Arad",
   "license": "MIT",
@@ -22,5 +25,7 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1"
+    "chai": "^3.4.0",
+    "mocha": "^2.3.3"
   }
 }
