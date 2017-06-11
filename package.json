@@ -23,6 +23,8 @@
     "url": "https://github.com/tomarad/JSON-Schema-Instantiator"
   },
   "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1"
     "chai": "^3.4.0",
     "mocha": "^2.3.3"
   }
