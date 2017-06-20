@@ -258,4 +258,27 @@ describe('Options', function() {
 
     expect(result).to.deep.equal(expected);
   });
+
+  it('should instantiate object with an array using minItems', function () {
+    expected = {
+      'todos': [0,0]
+    };
+    schema = {
+      'title': 'todo',
+      'type': 'object',
+      'properties': {
+        'todos': {
+          'type': 'array',
+          'items': {
+            'type': 'integer'
+          },
+          'minItems': 2
+        }
+      },
+      'required': ['todos']
+    };
+    result = instantiate(schema, {});
+
+    expect(result).to.deep.equal(expected);
+  });
 });
