@@ -124,8 +124,8 @@ function instantiate(schema, options) {
       }
     } else if (type === 'array') {
       data[name] = [];
-      var len = 1;
-      if (obj.minItems || obj.minItems === 0) {
+      var len = 0;
+      if (obj.minItems || obj.minItems > 0) {
         len = obj.minItems;
       }
 

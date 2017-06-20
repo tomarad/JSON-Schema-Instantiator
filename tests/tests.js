@@ -237,4 +237,25 @@ describe('Options', function() {
     };
     expect(result).to.deep.equal(expected);
   });
+  it('should instantiate object with an empty array', function () {
+    expected = {
+      'todos': []
+    };
+    schema = {
+      'title': 'todo',
+      'type': 'object',
+      'properties': {
+        'todos': {
+          'type': 'array',
+          'items': {
+            'type': 'integer'
+          }
+        }
+      },
+      'required': ['todos']
+    };
+    result = instantiate(schema, {});
+
+    expect(result).to.deep.equal(expected);
+  });
 });
