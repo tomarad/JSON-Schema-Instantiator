@@ -69,6 +69,15 @@ function isEnum(obj) {
 }
 
 /**
+ * Checks whether a variable is an array.
+ * @param obj - an object.
+ * @returns {boolean}
+ */
+function isArray(obj) {
+  return Array.isArray(obj);
+}
+
+/**
  * Instantiate an enum.
  * @param val - The object that represents the primitive.
  * @returns {*}
@@ -105,11 +114,11 @@ function instantiate(schema, options) {
       return;
     }
     var i;
-    // Check if type is array of types
-    // if so, set type to first in list of types
-    if (Array.isArray(obj.type)) {
-      // if obj.type is not overridden, it will fail the isPrimitive check
-      // which internally also checks obj.type
+    // Check if type is array of types.
+    if (isArray(obj.type)) {
+      // If so, set type to first in list of types.
+      // If obj.type is not overridden, it will fail the isPrimitive check.
+      // Which internally also checks obj.type`
       obj.type = obj.type[0];
     }
     var type = obj.type;
