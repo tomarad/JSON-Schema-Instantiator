@@ -69,6 +69,31 @@ function isEnum(obj) {
 }
 
 /**
+ * Checks whether a variable is an array.
+ * @param obj - an object.
+ * @returns {boolean}
+ */
+function isArray(obj) {
+  return Array.isArray(obj);
+}
+
+/**
+ * Extracts the type of the object.
+ * If the type is an array, set type to first in list of types.
+ * If obj.type is not overridden, it will fail the isPrimitive check.
+ * Which internally also checks obj.type.
+ * @param obj - An object.
+*/
+function getObjectType(obj) {
+  // Check if type is array of types.
+  if (isArray(obj.type)) {
+    obj.type = obj.type[0];
+  }
+
+  return obj.type;
+}
+
+/**
  * Instantiate an enum.
  * @param val - The object that represents the primitive.
  * @returns {*}
@@ -104,8 +129,10 @@ function instantiate(schema, options) {
     if (!obj) {
       return;
     }
+
     var i;
-    var type = obj.type;
+    var type = getObjectType(obj);
+
     // We want non-primitives objects (primitive === object w/o properties).
     if (type === 'object' && obj.properties) {
       data[name] = data[name] || { };
