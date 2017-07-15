@@ -78,6 +78,22 @@ function isArray(obj) {
 }
 
 /**
+ * Extracts the type of the object.
+ * If the type is an array, set type to first in list of types.
+ * If obj.type is not overridden, it will fail the isPrimitive check.
+ * Which internally also checks obj.type.
+ * @param obj - An object.
+*/
+function getObjectType(obj) {
+  // Check if type is array of types.
+  if (isArray(obj.type)) {
+    obj.type = obj.type[0];
+  }
+
+  return obj.type;
+}
+
+/**
  * Instantiate an enum.
  * @param val - The object that represents the primitive.
  * @returns {*}
@@ -113,15 +129,10 @@ function instantiate(schema, options) {
     if (!obj) {
       return;
     }
+
     var i;
-    // Check if type is array of types.
-    if (isArray(obj.type)) {
-      // If so, set type to first in list of types.
-      // If obj.type is not overridden, it will fail the isPrimitive check.
-      // Which internally also checks obj.type`
-      obj.type = obj.type[0];
-    }
-    var type = obj.type;
+    var type = getObjectType(obj);
+
     // We want non-primitives objects (primitive === object w/o properties).
     if (type === 'object' && obj.properties) {
       data[name] = data[name] || { };
