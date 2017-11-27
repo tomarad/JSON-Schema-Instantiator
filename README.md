@@ -40,10 +40,10 @@ var schema = {
 instance = instantiator.instantiate(schema);
 // instance === { title: "Example", description: "" }
 
-instance = instantiator.instantiate(schema, {requiredPropertiesOnly: true});
+instance = instantiator.instantiate(schema, {requiredPropertiesOnly: false});
 // instance === { title: "Example", description: "" }
 
-instance = instantiator.instantiate(schema, {requiredPropertiesOnly: false});
+instance = instantiator.instantiate(schema, {requiredPropertiesOnly: true});
 // instance === { title: "Example" }
 
 ```
