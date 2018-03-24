@@ -62,7 +62,6 @@ describe('Primitives', function() {
   });
 });
 
-
 describe('Objects', function() {
   it('should instantiate object without properties', function() {
     schema = {
@@ -160,7 +159,7 @@ describe('AllOf', function() {
     expect(result).to.deep.equal(expected);
   });
 });
-    
+
 describe('Options', function() {
   it('should instantiate object without properties', function() {
     schema = {
@@ -184,7 +183,7 @@ describe('Options', function() {
     expected = {};
     expect(result).to.deep.equal(expected);
   });
-    
+
   it('should instantiate object with only property', function() {
     schema = {
       'type': 'object',
@@ -204,7 +203,7 @@ describe('Options', function() {
     };
     expect(result).to.deep.equal(expected);
   });
-    
+
   it('should instantiate object with all properties', function() {
     schema = {
       'type': 'object',
@@ -287,6 +286,169 @@ describe('Options', function() {
       'required': ['todos']
     };
     result = instantiate(schema, {});
+
+    expect(result).to.deep.equal(expected);
+  });
+});
+
+describe('References', function() {
+
+  // Taken from https://spacetelescope.github.io/understanding-json-schema/structuring.
+  it('should intantiate a simple reference', function () {
+    schema = {
+      "definitions": {
+        "address": {
+          "type": "object",
+          "properties": {
+            "street_address": { "type": "string" },
+            "city":           { "type": "string" },
+            "state":          { "type": "string" }
+          },
+          "required": ["street_address", "city", "state"]
+        }
+      },
+
+      "type": "object",
+
+      "properties": {
+        "billing_address": { "$ref": "#/definitions/address" },
+        "shipping_address": { "$ref": "#/definitions/address" }
+      }
+    };
+
+    result = instantiate(schema);
+    expected = {
+      billing_address: { street_address: '', city: '', state: '' },
+      shipping_address: { street_address: '', city: '', state: '' }
+    };
+
+    expect(result).to.deep.equal(expected);
+  });
+
+  it('should intantiate a simple reference', function () {
+    schema = {
+      "definitions": {
+        "a": {
+          "type": "object",
+          "properties": {
+            "x": { "type": "string", "default": "tomas" },
+            "y": { "type": "string" },
+            "z": { "type": "string" }
+          }
+        },
+        "b": {
+          "type": "object",
+          "properties": {
+            "aaa": { "type": "string" },
+            "bbb": { "$ref": "#/definitions/a"}
+          }
+        }
+      },
+
+      "type": "object",
+
+      "properties": {
+        "yo": { "$ref": "#/definitions/b" }
+      }
+    };
+
+    result = instantiate(schema);
+    expected = {
+      yo: { aaa: '', bbb: { x: 'tomas', y: '', z: '' } }
+    };
+
+    expect(result).to.deep.equal(expected);
+  });
+
+  // Taken from https://cswr.github.io/JsonSchema/spec/definitions_references.
+  it ('should instantiate a simple allOf reference', function () {
+    schema = {
+      "definitions": {
+        "person": {
+          "type": "object",
+          "required": ["first_name", "last_name", "age"],
+          "properties": {
+            "first_name": {"type": "string"},
+            "last_name": {"type": "string"},
+            "age": {"type": "integer"}
+          }
+        },
+        "football_team": {
+          "type": "object",
+          "required": ["name", "league"],
+          "properties": {
+            "name": {"type": "string"},
+            "league": {"type": "string"},
+            "year_founded": {"type": "integer"}
+          }
+        }
+
+      },
+      "allOf": [
+        {"$ref": "#/definitions/person"},
+        {"$ref": "#/definitions/football_team"}
+      ]
+    };
+
+    result = instantiate(schema);
+    expected = {
+      first_name: '',
+      last_name: '',
+      age: 0,
+      name: '',
+      league: '',
+      year_founded: 0
+    };
+
+    expect(result).to.deep.equal(expected);
+  });
+
+  it ('should instantiate a complex allOf reference', function () {
+    schema = {
+      "definitions": {
+        "person": {
+          "type": "object",
+          "required": ["first_name", "last_name", "age"],
+          "properties": {
+            "first_name": {"type": "string"},
+            "last_name": {"type": "string"},
+            "age": {"type": "integer"}
+          }
+        },
+        "football_team": {
+          "type": "object",
+          "required": ["name", "league"],
+          "properties": {
+            "name": {"type": "string"},
+            "league": {"type": "string"},
+            "year_founded": {"type": "integer"}
+          }
+        }
+
+      },
+      "allOf": [
+        {"$ref": "#/definitions/person"},
+        {
+          "type": "object",
+          "required": ["current_club"],
+          "properties": {
+            "current_club": {"$ref": "#/definitions/football_team"}
+          }
+        }
+      ]
+    };
+
+    result = instantiate(schema);
+    expected = {
+      first_name: '',
+      last_name: '',
+      age: 0,
+      current_club: {
+        name: '',
+        league: '',
+        year_founded: 0
+      }
+    };
 
     expect(result).to.deep.equal(expected);
   });

@@ -110,6 +110,28 @@ function instantiateEnum(val) {
 }
 
 /**
+ * Finds a definition in a schema.
+ * Useful for finding references.
+ *
+ * @param schema    The full schema object.
+ * @param ref       The reference to find.
+ * @return {*}      The object representing the ref.
+ */
+function findDefinition(schema, ref) {
+  var propertyPath = ref.split('/').slice(1); // Ignore the #/uri at the beginning.
+  var currentProperty = propertyPath.splice(0, 1)[0];
+
+  var currentValue = schema;
+
+  while (currentProperty) {
+    currentValue = currentValue[currentProperty];
+    currentProperty = propertyPath.splice(0, 1)[0];
+  }
+
+  return currentValue;
+}
+
+/**
  * The main function.
  * Calls sub-objects recursively, depth first, using the sub-function 'visit'.
  * @param schema - The schema to instantiate.
@@ -149,6 +171,9 @@ function instantiate(schema, options) {
       for (i = 0; i < obj.allOf.length; i++) {
         visit(obj.allOf[i], name, data);
       }
+    } else if (obj.$ref) {
+      obj = findDefinition(schema, obj.$ref);
+      visit(obj, name, data);
     } else if (type === 'array') {
       data[name] = [];
       var len = 0;
