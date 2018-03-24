@@ -60,9 +60,11 @@ describe('Primitives', function() {
     expected = '';
     expect(result).to.deep.equal(expected);
   });
+
 });
 
 describe('Objects', function() {
+
   it('should instantiate object without properties', function() {
     schema = {
       'type': 'object'
@@ -126,9 +128,11 @@ describe('Objects', function() {
     };
     expect(result).to.deep.equal(expected);
   });
+
 });
 
 describe('AllOf', function() {
+
   it('should instantiate schema with allOf', function() {
     schema = {
       'allOf': [
@@ -158,9 +162,11 @@ describe('AllOf', function() {
     };
     expect(result).to.deep.equal(expected);
   });
+
 });
 
 describe('Options', function() {
+
   it('should instantiate object without properties', function() {
     schema = {
       'type': 'object'
@@ -245,6 +251,7 @@ describe('Options', function() {
     };
     expect(result).to.deep.equal(expected);
   });
+
   it('should instantiate object with an empty array', function () {
     expected = {
       'todos': []
@@ -289,6 +296,7 @@ describe('Options', function() {
 
     expect(result).to.deep.equal(expected);
   });
+
 });
 
 describe('References', function() {
@@ -452,4 +460,5 @@ describe('References', function() {
 
     expect(result).to.deep.equal(expected);
   });
+
 });

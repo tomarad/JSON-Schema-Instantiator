@@ -80,3 +80,5 @@ Inject the InstantiatorService and use it:
 ...
 ```
 
+### Note
+This does not replace schema validation! Invalid schemas will yield unexpected results.
