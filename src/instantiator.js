@@ -52,7 +52,7 @@ function instantiatePrimitive(val) {
   var type = val.type;
 
   // Support for default values in the JSON Schema.
-  if (val.default) {
+  if (val.hasOwnProperty('default')) {
     return val.default;
   }
 
