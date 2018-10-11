@@ -1,6 +1,6 @@
 {
   "name": "json-schema-instantiator",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "A simple instantiator for json schemas.",
   "main": "index.js",
   "scripts": {
@@ -23,9 +23,9 @@
     "url": "https://github.com/tomarad/JSON-Schema-Instantiator"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.1",
     "chai": "^3.4.0",
-    "mocha": "^2.3.3"
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "mocha": "^5.2.0"
   }
 }
