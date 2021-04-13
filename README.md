@@ -32,20 +32,47 @@ var schema = {
         },
         "description": {
             "type": "string"
+        },
+        "quantity": {
+            "type": "number"
+        },
+        "endDate": {
+            "type": "string",
+            "format": "date"
         }
     },
     "required": ["title"]
 };
 
 instance = instantiator.instantiate(schema);
-// instance === { title: "Example", description: "" }
+// instance === { title: "Example", description: "", quantity: 0, endDate: "" }
 
 instance = instantiator.instantiate(schema, {requiredPropertiesOnly: false});
-// instance === { title: "Example", description: "" }
+// instance === { title: "Example", description: "", quantity: 0, endDate: "" }
 
 instance = instantiator.instantiate(schema, {requiredPropertiesOnly: true});
 // instance === { title: "Example" }
 
+// Override default values for a given type with a static value
+instance = instantiator.instantiate(schema, { defaults: { number: 42 } });
+// instance === { title: "Example", description: "", quantity: 42, endDate: "" }
+
+// Override default values for a given type function that returns a value
+instance = instantiator.instantiate(schema, {
+  defaults: {
+    // Function that receives current property/val and returns a value
+    string: function (val) {
+      var format = val.format;
+
+      if (format && format === "date") {
+        return new Date(2021, 0, 1);
+      }
+
+      return "";
+    },
+  },
+});
+// instance === { title: "Example", description: "", quantity: 0, endDate: new Date(2021, 0, 1) }
 ```
 
 ### AngularJS

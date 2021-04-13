@@ -297,6 +297,65 @@ describe('Options', function() {
     expect(result).to.deep.equal(expected);
   });
 
+  it('should instantiate object with provided defaults', function () {
+    schema = {
+      'type': 'object',
+      'properties': {
+        'title': {
+          'type': 'string',
+        },
+        'quantity': {
+          'type': 'number'
+        }
+      },
+      'required': ['title']
+    };
+    result = instantiate(schema, {
+      defaults: {
+        string: 'foo',
+        number: 21
+      }
+    });
+    expected = {
+      'title': 'foo',
+      'quantity': 21,
+    };
+    expect(result).to.deep.equal(expected);
+  });
+
+  it('should instantiate object with provided function defaults', function () {
+    schema = {
+      'type': 'object',
+      'properties': {
+        'title': {
+          'type': 'string',
+        },
+        'birthday': {
+          'type': 'string',
+          'format': 'date'
+        },
+      },
+      'required': ['start']
+    };
+    result = instantiate(schema, {
+      defaults: {
+        string: function (val) {
+          var format = val.format;
+
+          if (format && format === 'date') {
+            return new Date(2021, 0, 1);
+          }
+
+          return '';
+        },
+      }
+    });
+    expected = {
+      'title': '',
+      'birthday': new Date(2021, 0, 1)
+    };
+    expect(result).to.deep.equal(expected);
+  });
 });
 
 describe('References', function() {
