@@ -7,7 +7,7 @@ var typesInstantiator = {
   'integer': 0,
   'null': null,
   'boolean': false, // Always stay positive?
-  'object': { }
+  'object': {}
 };
 
 /**
@@ -45,15 +45,29 @@ function shouldVisit(property, obj, options) {
 
 /**
  * Instantiate a primitive.
- * @param val - The object that represents the primitive.
+ * @param {Object} val - The object that represents the primitive.
+ * @param {String} val.type
+ * @param {Any} [val.default]
+ * @param {Object.<string, any>} [defaults]
  * @returns {*}
  */
-function instantiatePrimitive(val) {
+function instantiatePrimitive(val, defaults) {
+  defaults = defaults || {};
+
   var type = val.type;
 
   // Support for default values in the JSON Schema.
   if (val.hasOwnProperty('default')) {
     return val.default;
+  }
+
+  // Support for provided default values
+  if (defaults.hasOwnProperty(type)) {
+    if (typeof defaults[type] === "function") {
+      return defaults[type](val);
+    }
+
+    return defaults[type];
   }
 
   return typesInstantiator[type];
@@ -134,7 +148,11 @@ function findDefinition(schema, ref) {
 /**
  * The main function.
  * Calls sub-objects recursively, depth first, using the sub-function 'visit'.
- * @param schema - The schema to instantiate.
+ *
+ * @param {Object} schema - The schema to instantiate.
+ * @param {Object} [options]
+ * @param {Boolean} [options.requiredPropertiesOnly]
+ * @param {Object.<string, any>} [options.defaults]
  * @returns {*}
  */
 function instantiate(schema, options) {
@@ -188,7 +206,7 @@ function instantiate(schema, options) {
     } else if (isEnum(obj)) {
       data[name] = instantiateEnum(obj);
     } else if (isPrimitive(obj)) {
-      data[name] = instantiatePrimitive(obj);
+      data[name] = instantiatePrimitive(obj, options.defaults);
     }
   }
 
