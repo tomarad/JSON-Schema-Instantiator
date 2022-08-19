@@ -73,6 +73,39 @@ function instantiatePrimitive(val, defaults) {
   return typesInstantiator[type];
 }
 
+function instantiateArray(val, visit, defaults) {
+  defaults = defaults || {};
+
+  var type = val.type;
+
+  // Support for default values in the JSON Schema.
+  if (val.hasOwnProperty('default')) {
+    return val.default;
+  }
+
+  // Support for provided default values
+  if (defaults.hasOwnProperty(type)) {
+    if (typeof defaults[type] === 'function') {
+      return defaults[type](val);
+    }
+
+    return defaults[type];
+  }
+
+  const result = [];
+  var len = 0;
+  if (val.minItems || val.minItems > 0) {
+    len = val.minItems;
+  }
+
+  // Instantiate 'len' items.
+  for (var i = 0; i < len; i++) {
+    visit(val.items, i, result);
+  }
+
+  return result;
+}
+
 /**
  * Checks whether a variable is an enum.
  * @param obj - an object.
@@ -193,16 +226,7 @@ function instantiate(schema, options) {
       obj = findDefinition(schema, obj.$ref);
       visit(obj, name, data);
     } else if (type === 'array') {
-      data[name] = [];
-      var len = 0;
-      if (obj.minItems || obj.minItems > 0) {
-        len = obj.minItems;
-      }
-
-      // Instantiate 'len' items.
-      for (i = 0; i < len; i++) {
-        visit(obj.items, i, data[name]);
-      }
+      data[name] = instantiateArray(obj, visit, options.defaults);
     } else if (isEnum(obj)) {
       data[name] = instantiateEnum(obj);
     } else if (isPrimitive(obj)) {
