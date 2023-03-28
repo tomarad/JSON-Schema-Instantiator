@@ -297,6 +297,57 @@ describe('Options', function() {
     expect(result).to.deep.equal(expected);
   });
 
+  it('should instantiate array with provided defaults', function () {
+    expected = {
+      'todos': [1, 2, 3]
+    };
+    schema = {
+      'title': 'todo',
+      'type': 'object',
+      'properties': {
+        'todos': {
+          'type': 'array',
+          'default': [1, 2, 3],
+          'items': {
+            'type': 'integer'
+          },
+        }
+      },
+      'required': ['todos']
+    };
+    result = instantiate(schema);
+
+    expect(result).to.deep.equal(expected);
+  });
+
+  it('should instantiate array with provided function defaults', function () {
+    expected = {
+      'todos': [1, 2, 3]
+    };
+    schema = {
+      'title': 'todo',
+      'type': 'object',
+      'properties': {
+        'todos': {
+          'type': 'array',
+          'items': {
+            'type': 'integer'
+          },
+        }
+      },
+      'required': ['todos']
+    };
+    result = instantiate(schema, {
+      defaults: {
+        array: function () {
+          return [1, 2, 3];
+        }
+      }
+    });
+
+    expect(result).to.deep.equal(expected);
+  });
+
   it('should instantiate object with provided defaults', function () {
     schema = {
       'type': 'object',
