@@ -11,7 +11,7 @@ await spawnPromise(`npx tsc -b ${tscConfigs.join(' ')}`, {
   outputPrefix: '[build]: '
 });
 
-// For ESModules compatibility
+// Rename file so it's correctly handled as an ESModule
 fs.rename('dist/esm/instantiator.js', 'dist/esm/instantiator.mjs', (err) => {
   if (err) {
     console.error(err);
