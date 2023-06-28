@@ -1,0 +1,7 @@
+.next
+.vercel
+dist/
+build/
+public/
+postman/
+node_modules/

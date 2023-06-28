@@ -1,0 +1,41 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "command": "node --unhandled-rejections=strict infrastructure/package_scripts/build.mjs",
+      "label": "build",
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "type": "shell",
+      "command": "node --unhandled-rejections=strict infrastructure/package_scripts/build_infrastructure.mjs",
+      "label": "build - infrastructure",
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "command": "node --unhandled-rejections=strict infrastructure/package_scripts/clean.mjs",
+      "label": "clean",
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "command": "node --unhandled-rejections=strict infrastructure/package_scripts/format.mjs",
+      "label": "format",
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "command": "node --unhandled-rejections=strict infrastructure/package_scripts/prepublish.mjs",
+      "label": "prepublish",
+      "group": "build"
+    },
+    {
+      "type": "shell",
+      "command": "node --unhandled-rejections=strict infrastructure/package_scripts/test.mjs",
+      "label": "test",
+      "group": "build"
+    }
+  ]
+}
