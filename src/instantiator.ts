@@ -1,5 +1,5 @@
 // The JSON Object that defines the default values of certain types.
-const typesInstantiator = {
+var typesInstantiator = {
   string: '',
   number: 0,
   integer: 0,
@@ -16,7 +16,7 @@ type InstanciatorTypes = keyof typeof typesInstantiator;
  * @returns {boolean}
  */
 function isPrimitive(obj) {
-  const type = obj.type;
+  var type = obj.type;
 
   return typesInstantiator[type] !== undefined;
 }
@@ -28,7 +28,7 @@ function isPrimitive(obj) {
  * @returns {boolean}
  */
 function isPropertyRequired(property, requiredArray) {
-  let found = false;
+  var found = false;
   requiredArray = requiredArray || [];
   requiredArray.forEach(function (requiredProperty) {
     if (requiredProperty === property) {
@@ -55,20 +55,15 @@ function shouldVisit(property, obj, options) {
 function instantiatePrimitive(val, defaults) {
   defaults = defaults || {};
 
-  const type = val.type;
+  var type = val.type;
 
   // Support for default values in the JSON Schema.
-  if (val.hasOwnProperty('default')) {
+  if (Object.prototype.hasOwnProperty.call(val, 'default')) {
     return val.default;
   }
 
-  // Support for const values in the JSON Schema.
-  if (val.hasOwnProperty('const')) {
-    return val.const;
-  }
-
   // Support for provided default values.
-  if (defaults.hasOwnProperty(type)) {
+  if (Object.prototype.hasOwnProperty.call(defaults, type)) {
     if (typeof defaults[type] === 'function') {
       return defaults[type](val);
     }
@@ -82,15 +77,15 @@ function instantiatePrimitive(val, defaults) {
 function instantiateArray(val, visit, defaults) {
   defaults = defaults || {};
 
-  const type = val.type;
+  var type = val.type;
 
   // Support for default values in the JSON Schema.
-  if (val.hasOwnProperty('default')) {
+  if (Object.prototype.hasOwnProperty.call(val, 'default')) {
     return val.default;
   }
 
   // Support for provided default values.
-  if (defaults.hasOwnProperty(type)) {
+  if (Object.prototype.hasOwnProperty.call(defaults, type)) {
     if (typeof defaults[type] === 'function') {
       return defaults[type](val);
     }
@@ -98,14 +93,14 @@ function instantiateArray(val, visit, defaults) {
     return defaults[type];
   }
 
-  const result = [];
-  let len = 0;
+  var result = [];
+  var len = 0;
   if (val.minItems || val.minItems > 0) {
     len = val.minItems;
   }
 
   // Instantiate 'len' items.
-  for (let i = 0; i < len; i++) {
+  for (var i = 0; i < len; i++) {
     visit(val.items, i, result);
   }
 
@@ -142,7 +137,13 @@ function getObjectType(obj) {
   if (isArray(obj.type)) {
     obj.type = obj.type[0];
   }
-  return obj.type;
+  if (obj.type) {
+    return obj.type;
+  }
+  if (obj.const !== undefined) {
+    return 'const';
+  }
+  return undefined;
 }
 
 /**
@@ -170,9 +171,9 @@ function instantiateEnum(val) {
  * @return {*}      The object representing the ref.
  */
 function findDefinition(schema, ref) {
-  const propertyPath = ref.split('/').slice(1); // Ignore the #/uri at the beginning.
-  let currentProperty = propertyPath.splice(0, 1)[0];
-  let currentValue = schema;
+  var propertyPath = ref.split('/').slice(1); // Ignore the #/uri at the beginning.
+  var currentProperty = propertyPath.splice(0, 1)[0];
+  var currentValue = schema;
 
   while (currentProperty) {
     currentValue = currentValue[currentProperty];
@@ -211,22 +212,22 @@ export function instantiate(
       return;
     }
 
-    const type = getObjectType(obj);
+    var type = getObjectType(obj);
 
     // We want non-primitives objects (primitive === object w/o properties).
     if (type === 'object' && obj.properties) {
       data[name] = data[name] || {};
 
       // Visit each property.
-      for (const property in obj.properties) {
-        if (obj.properties.hasOwnProperty(property)) {
+      for (var property in obj.properties) {
+        if (Object.prototype.hasOwnProperty.call(obj.properties, property)) {
           if (shouldVisit(property, obj, options)) {
             visit(obj.properties[property], property, data[name]);
           }
         }
       }
     } else if (obj.allOf) {
-      for (let i = 0; i < obj.allOf.length; i++) {
+      for (var i = 0; i < obj.allOf.length; i++) {
         visit(obj.allOf[i], name, data);
       }
     } else if (obj.$ref) {
@@ -239,11 +240,11 @@ export function instantiate(
     } else if (isPrimitive(obj)) {
       data[name] = instantiatePrimitive(obj, options.defaults);
     } else if (type === 'const') {
-      data[name] = instantiatePrimitive(obj, options.defaults);
+      data[name] = obj[name];
     }
   }
 
-  const data = { __temp__: null };
+  var data = { __temp__: null };
   visit(schema, '__temp__', data);
   return data['__temp__'];
 }
