@@ -192,13 +192,13 @@ function findDefinition(schema, ref) {
  * @param {Object.<string, any>} [options.defaults]
  * @returns {*}
  */
-export function instantiate(
+export function instantiate<T = any>(
   schema: object,
   options: {
     defaults?: Record<InstanciatorTypes, any>;
     requiredPropertiesOnly?: boolean;
   } = {}
-) {
+): T {
   /**
    * Visits each sub-object using recursion.
    * If it reaches a primitive, instantiate it.
@@ -245,7 +245,7 @@ export function instantiate(
 
   var data = { __temp__: null };
   visit(schema, '__temp__', data);
-  return data['__temp__'];
+  return data['__temp__'] as T;
 }
 
 export default instantiate;
