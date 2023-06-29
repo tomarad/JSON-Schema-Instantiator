@@ -40,7 +40,7 @@ const style = await fs
   }, {});
 
   // format & write package.json
-  fs.writeFile(
+  await fs.writeFile(
     resolve(process.cwd(), 'package.json'),
     prettier.format(JSON.stringify(packageJson), {
       ...style,
