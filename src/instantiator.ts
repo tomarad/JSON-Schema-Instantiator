@@ -30,11 +30,11 @@ function isPrimitive(obj) {
 function isPropertyRequired(property, requiredArray) {
   var found = false;
   requiredArray = requiredArray || [];
-  requiredArray.forEach(function (requiredProperty) {
+  for (var requiredProperty of requiredArray) {
     if (requiredProperty === property) {
       found = true;
     }
-  });
+  }
   return found;
 }
 
