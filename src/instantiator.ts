@@ -67,7 +67,6 @@ function instantiatePrimitive(val, defaults) {
     if (typeof defaults[type] === 'function') {
       return defaults[type](val);
     }
-
     return defaults[type];
   }
 
@@ -240,7 +239,7 @@ export function instantiate(
     } else if (isPrimitive(obj)) {
       data[name] = instantiatePrimitive(obj, options.defaults);
     } else if (type === 'const') {
-      data[name] = obj[name];
+      data[name] = obj.const;
     }
   }
 
