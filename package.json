@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "A simple instantiator for json schemas.",
   "main": "dist/cjs/instantiator.js",
-  "module": "dist/mjs/instantiator.mjs",
+  "module": "dist/esm/instantiator.mjs",
   "types": "dist/types/instantiator.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/mjs/instantiator.mjs",
+      "import": "./dist/esm/instantiator.mjs",
       "require": "./dist/cjs/instantiator.js"
     }
   },
