@@ -142,7 +142,6 @@ function getObjectType(obj) {
   if (isArray(obj.type)) {
     obj.type = obj.type[0];
   }
-
   return obj.type;
 }
 

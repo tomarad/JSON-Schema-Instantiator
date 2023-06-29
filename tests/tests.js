@@ -557,4 +557,53 @@ describe('References', function () {
 
     expect(result).to.deep.equal(expected);
   });
+
+  it('should instantiate consts', function () {
+    schema = {
+      type: 'object',
+      required: ['not_const', 'required_string_const', 'number_const', 'array_const', 'object_const'],
+      properties: {
+        not_const: {
+          type: 'object',
+          required: ['const'],
+          properties: {
+            const: { type: 'string', default: 'test' }
+          }
+        },
+        required_string_const: {
+          const: 'test'
+        },
+        not_required_string_const: {
+          const: 'test'
+        },
+        number_const: {
+          const: 0
+        },
+        array_const: {
+          const: [1, 2, 3]
+        },
+        object_const: {
+          const: {
+            test: 'test'
+          }
+        }
+      }
+    };
+
+    result = instantiate(schema);
+    expected = {
+      not_const: {
+        const: 'test'
+      },
+      required_string_const: 'test',
+      not_required_string_const: 'test',
+      number_const: 0,
+      array_const: [1, 2, 3],
+      object_const: {
+        test: 'test'
+      }
+    };
+
+    expect(result).to.deep.equal(expected);
+  });
 });
