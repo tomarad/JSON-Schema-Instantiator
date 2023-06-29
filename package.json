@@ -16,7 +16,7 @@
     "build_infrastructure": "node --unhandled-rejections=strict infrastructure/package_scripts/build_infrastructure.mjs",
     "clean": "node --unhandled-rejections=strict infrastructure/package_scripts/clean.mjs",
     "format": "node --unhandled-rejections=strict infrastructure/package_scripts/format.mjs",
-    "prepublish": "node --unhandled-rejections=strict infrastructure/package_scripts/prepublish.mjs",
+    "prepack": "node --unhandled-rejections=strict infrastructure/package_scripts/prepack.mjs",
     "test": "node --unhandled-rejections=strict infrastructure/package_scripts/test.mjs"
   },
   "keywords": [

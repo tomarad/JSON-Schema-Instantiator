@@ -27,8 +27,8 @@
     },
     {
       "type": "shell",
-      "command": "node --unhandled-rejections=strict infrastructure/package_scripts/prepublish.mjs",
-      "label": "prepublish",
+      "command": "node --unhandled-rejections=strict infrastructure/package_scripts/prepack.mjs",
+      "label": "prepack",
       "group": "build"
     },
     {
