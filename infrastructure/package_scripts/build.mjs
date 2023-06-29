@@ -1,13 +1,13 @@
 import fs from 'node:fs';
 import { spawnPromise } from './utilities/spawn_promise.mjs';
 
-const tscConfigs = [
+const tsConfigs = [
   './infrastructure/typescript/tsconfig.cjs.json',
   './infrastructure/typescript/tsconfig.esm.json',
   './infrastructure/typescript/tsconfig.types.json'
 ];
 
-await spawnPromise(`npx tsc -b ${tscConfigs.join(' ')}`, {
+await spawnPromise(`npx tsc -b ${tsConfigs.join(' ')}`, {
   outputPrefix: '[build]: '
 });
 
