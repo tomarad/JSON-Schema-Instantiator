@@ -3,4 +3,3 @@ src
 tests
 infrastructure
 .gitignore
-.pnpm-lock.yaml
