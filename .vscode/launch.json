@@ -1,0 +1,65 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "build",
+      "program": "infrastructure/package_scripts/build.mjs",
+      "env": { "NODE_OPTIONS": "--inspect" },
+      "request": "launch",
+      "outputCapture": "std",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node",
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "name": "build_infrastructure",
+      "program": "infrastructure/package_scripts/build_infrastructure.mjs",
+      "env": { "NODE_OPTIONS": "--inspect" },
+      "request": "launch",
+      "outputCapture": "std",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node",
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "name": "clean",
+      "program": "infrastructure/package_scripts/clean.mjs",
+      "env": { "NODE_OPTIONS": "--inspect" },
+      "request": "launch",
+      "outputCapture": "std",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node",
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "name": "format",
+      "program": "infrastructure/package_scripts/format.mjs",
+      "env": { "NODE_OPTIONS": "--inspect" },
+      "request": "launch",
+      "outputCapture": "std",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node",
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "name": "prepack",
+      "program": "infrastructure/package_scripts/prepack.mjs",
+      "env": { "NODE_OPTIONS": "--inspect" },
+      "request": "launch",
+      "outputCapture": "std",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node",
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "name": "test",
+      "program": "infrastructure/package_scripts/test.mjs",
+      "env": { "NODE_OPTIONS": "--inspect" },
+      "request": "launch",
+      "outputCapture": "std",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node",
+      "internalConsoleOptions": "openOnSessionStart"
+    }
+  ]
+}

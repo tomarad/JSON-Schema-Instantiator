@@ -1,0 +1,11 @@
+{
+  "files.eol": "\n",
+  "editor.tabSize": 2,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.configPath": "infrastructure/prettier/prettier.config.json",
+  "prettier.ignorePath": "infrastructure/prettier/.prettierignore",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  }
+}

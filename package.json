@@ -1,10 +1,23 @@
 {
   "name": "json-schema-instantiator",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "description": "A simple instantiator for json schemas.",
-  "main": "index.js",
+  "main": "dist/cjs/instantiator.js",
+  "module": "dist/esm/instantiator.mjs",
+  "types": "dist/types/instantiator.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/instantiator.mjs",
+      "require": "./dist/cjs/instantiator.js"
+    }
+  },
   "scripts": {
-    "test": "mocha tests/tests.js"
+    "build": "node --unhandled-rejections=strict infrastructure/package_scripts/build.mjs",
+    "build_infrastructure": "node --unhandled-rejections=strict infrastructure/package_scripts/build_infrastructure.mjs",
+    "clean": "node --unhandled-rejections=strict infrastructure/package_scripts/clean.mjs",
+    "format": "node --unhandled-rejections=strict infrastructure/package_scripts/format.mjs",
+    "prepack": "node --unhandled-rejections=strict infrastructure/package_scripts/prepack.mjs",
+    "test": "node --unhandled-rejections=strict infrastructure/package_scripts/test.mjs"
   },
   "keywords": [
     "JSON",
@@ -16,16 +29,19 @@
     "Generate",
     "Data Generation"
   ],
-  "author": "Tom Arad",
+  "authors": [
+    "Tom Arad",
+    "Samuel Batista <sambatista@pm.me> (https://sambatista.com) "
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/tomarad/JSON-Schema-Instantiator"
   },
   "devDependencies": {
-    "chai": "^3.4.0",
-    "gulp": "^4.0.2",
-    "gulp-concat": "^2.6.1",
-    "mocha": "^9.0.1"
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "prettier": "^2.8.8",
+    "typescript": "^5.1.5"
   }
 }

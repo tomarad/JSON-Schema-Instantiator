@@ -1,14 +1,14 @@
-'use strict';
-
 // The JSON Object that defines the default values of certain types.
 var typesInstantiator = {
-  'string': '',
-  'number': 0,
-  'integer': 0,
-  'null': null,
-  'boolean': false, // Always stay positive?
-  'object': {}
+  string: '',
+  number: 0,
+  integer: 0,
+  null: null,
+  boolean: false, // Always stay positive?
+  object: {}
 };
+
+type InstanciatorTypes = keyof typeof typesInstantiator;
 
 /**
  * Checks whether a variable is a primitive.
@@ -30,17 +30,18 @@ function isPrimitive(obj) {
 function isPropertyRequired(property, requiredArray) {
   var found = false;
   requiredArray = requiredArray || [];
-  requiredArray.forEach(function(requiredProperty) {
-      if (requiredProperty === property) {
-        found = true;
-      }
-  });
+  for (var requiredProperty of requiredArray) {
+    if (requiredProperty === property) {
+      found = true;
+    }
+  }
   return found;
 }
 
-
 function shouldVisit(property, obj, options) {
-    return (!options.requiredPropertiesOnly) || (options.requiredPropertiesOnly && isPropertyRequired(property, obj.required));
+  return (
+    !options.requiredPropertiesOnly || (options.requiredPropertiesOnly && isPropertyRequired(property, obj.required))
+  );
 }
 
 /**
@@ -57,16 +58,15 @@ function instantiatePrimitive(val, defaults) {
   var type = val.type;
 
   // Support for default values in the JSON Schema.
-  if (val.hasOwnProperty('default')) {
+  if (Object.prototype.hasOwnProperty.call(val, 'default')) {
     return val.default;
   }
 
-  // Support for provided default values
-  if (defaults.hasOwnProperty(type)) {
-    if (typeof defaults[type] === "function") {
+  // Support for provided default values.
+  if (Object.prototype.hasOwnProperty.call(defaults, type)) {
+    if (typeof defaults[type] === 'function') {
       return defaults[type](val);
     }
-
     return defaults[type];
   }
 
@@ -79,12 +79,12 @@ function instantiateArray(val, visit, defaults) {
   var type = val.type;
 
   // Support for default values in the JSON Schema.
-  if (val.hasOwnProperty('default')) {
+  if (Object.prototype.hasOwnProperty.call(val, 'default')) {
     return val.default;
   }
 
-  // Support for provided default values
-  if (defaults.hasOwnProperty(type)) {
+  // Support for provided default values.
+  if (Object.prototype.hasOwnProperty.call(defaults, type)) {
     if (typeof defaults[type] === 'function') {
       return defaults[type](val);
     }
@@ -92,7 +92,7 @@ function instantiateArray(val, visit, defaults) {
     return defaults[type];
   }
 
-  const result = [];
+  var result = [];
   var len = 0;
   if (val.minItems || val.minItems > 0) {
     len = val.minItems;
@@ -130,14 +130,19 @@ function isArray(obj) {
  * If obj.type is not overridden, it will fail the isPrimitive check.
  * Which internally also checks obj.type.
  * @param obj - An object.
-*/
+ */
 function getObjectType(obj) {
   // Check if type is array of types.
   if (isArray(obj.type)) {
     obj.type = obj.type[0];
   }
-
-  return obj.type;
+  if (obj.type) {
+    return obj.type;
+  }
+  if (obj.const !== undefined) {
+    return 'const';
+  }
+  return undefined;
 }
 
 /**
@@ -148,10 +153,10 @@ function getObjectType(obj) {
 function instantiateEnum(val) {
   // Support for default values in the JSON Schema.
   if (val.default) {
-      return val.default;
+    return val.default;
   }
   if (!val.enum.length) {
-      return undefined;
+    return undefined;
   }
   return val.enum[0];
 }
@@ -167,7 +172,6 @@ function instantiateEnum(val) {
 function findDefinition(schema, ref) {
   var propertyPath = ref.split('/').slice(1); // Ignore the #/uri at the beginning.
   var currentProperty = propertyPath.splice(0, 1)[0];
-
   var currentValue = schema;
 
   while (currentProperty) {
@@ -188,9 +192,13 @@ function findDefinition(schema, ref) {
  * @param {Object.<string, any>} [options.defaults]
  * @returns {*}
  */
-function instantiate(schema, options) {
-  options = options || {};
-
+export function instantiate<T = any>(
+  schema: object,
+  options: {
+    defaults?: Record<InstanciatorTypes, any>;
+    requiredPropertiesOnly?: boolean;
+  } = {}
+): T {
   /**
    * Visits each sub-object using recursion.
    * If it reaches a primitive, instantiate it.
@@ -203,23 +211,22 @@ function instantiate(schema, options) {
       return;
     }
 
-    var i;
     var type = getObjectType(obj);
 
     // We want non-primitives objects (primitive === object w/o properties).
     if (type === 'object' && obj.properties) {
-      data[name] = data[name] || { };
+      data[name] = data[name] || {};
 
       // Visit each property.
       for (var property in obj.properties) {
-        if (obj.properties.hasOwnProperty(property)) {
+        if (Object.prototype.hasOwnProperty.call(obj.properties, property)) {
           if (shouldVisit(property, obj, options)) {
             visit(obj.properties[property], property, data[name]);
           }
         }
       }
     } else if (obj.allOf) {
-      for (i = 0; i < obj.allOf.length; i++) {
+      for (var i = 0; i < obj.allOf.length; i++) {
         visit(obj.allOf[i], name, data);
       }
     } else if (obj.$ref) {
@@ -231,25 +238,14 @@ function instantiate(schema, options) {
       data[name] = instantiateEnum(obj);
     } else if (isPrimitive(obj)) {
       data[name] = instantiatePrimitive(obj, options.defaults);
+    } else if (type === 'const') {
+      data[name] = obj.const;
     }
   }
 
-  var data = {};
-  visit(schema, 'kek', data);
-  return data['kek'];
+  var data = { __temp__: null };
+  visit(schema, '__temp__', data);
+  return data['__temp__'] as T;
 }
 
-// If we're using Node.js, export the module.
-if (typeof module !== 'undefined') {
-  module.exports = {
-    instantiate: instantiate
-  };
-}
-
-'use strict';
-
-angular.module('schemaInstantiator', [])
-
-  .service('InstantiatorService', function InstantiatorService() {
-    this.instantiate = instantiate;
-  });
+export default instantiate;
