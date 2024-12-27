@@ -1,6 +1,6 @@
 {
   "name": "json-schema-instantiator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple instantiator for json schemas.",
   "main": "dist/cjs/instantiator.js",
   "module": "dist/esm/instantiator.mjs",
